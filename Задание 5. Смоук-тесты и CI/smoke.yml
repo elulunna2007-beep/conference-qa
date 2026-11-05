@@ -1,0 +1,38 @@
+name: Смоук-тесты портала
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Тесты (этот репозиторий)
+        uses: actions/checkout@v4
+        with:
+          path: conference-qa
+
+      - name: Портал (репозиторий conference-django рядом)
+        uses: actions/checkout@v4
+        with:
+          repository: elulunna2007-beep/conference-django
+          path: conference-django
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Установка зависимостей
+        run: pip install -r conference-qa/requirements.txt
+
+      - name: Смоук-тесты
+        working-directory: conference-qa
+        run: python -m pytest -m smoke --html=report.html --self-contained-html
+
+      - name: Отчёт
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: smoke-report
+          path: conference-qa/report.html
