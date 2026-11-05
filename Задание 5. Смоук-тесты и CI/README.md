@@ -16,6 +16,8 @@
 
 ## CI
 
-Готов файл GitHub Actions `smoke.yml`: ubuntu-latest, Python 3.12, скачивает оба репозитория, ставит зависимости, запускает `pytest -m smoke` (Chrome на ubuntu-latest уже стоит, драйвер скачивает Selenium Manager), сохраняет отчёт как артефакт.
+Файл `.github/workflows/smoke.yml` в корне репозитория запускает смоук-тесты на каждый push и pull request. Задача на ubuntu-latest: скачивает этот репозиторий и `conference-django`, ставит Python 3.12 и зависимости, выводит версии Chrome и Django, запускает `pytest -m smoke` (портал тесты поднимают сами, Chrome на ubuntu-latest уже стоит, драйвер скачивает Selenium Manager) и сохраняет `report.html` как артефакт.
 
-**Запуск в GitHub Actions не проверялся.** Токену, которым я выкладывала репозитории, не хватает права `workflow`, поэтому GitHub не принимает файл из `.github/workflows`. Файл лежит здесь же как `smoke.yml`, а также в локальной ветке `ci` (путь `.github/workflows/smoke.yml`). Чтобы включить CI: добавить файл в `.github/workflows` через веб-интерфейс GitHub («Add file») или отправить ветку токеном с правом `workflow`. Зелёного прогона у меня нет, и я его не выдумываю.
+Первый прогон: https://github.com/elulunna2007-beep/conference-qa/actions/runs/42128585948. Статус success, Chrome 156, Django 6.1.3, `5 passed, 11 deselected in 19.73s`. Остальные 11 тестов репозитория (задание 4 и тест, который падает по заданию) в смоук-набор не входят.
+
+Снимок страницы прогона: screens/03_github_actions_zelenyj_progon.png.
